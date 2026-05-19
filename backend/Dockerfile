@@ -14,5 +14,5 @@ RUN npx prisma generate
 # Copy the rest of the source code
 COPY . .
 
-# Start the application using tsx. Push schema to database on startup.
-CMD ["sh", "-c", "npx prisma db push && npx prisma db seed && npm run dev"]
+# Start: push schema, seed (non-fatal), then run dev server
+CMD ["sh", "-c", "npx prisma db push --skip-generate && (npx prisma db seed || true) && npm run dev"]

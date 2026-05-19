@@ -1,5 +1,8 @@
 {
   "type": "module",
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "dependencies": {
     "@prisma/client": "^6.16.3",
     "axios": "^1.12.2",
@@ -25,3 +28,4 @@
     "seed": "node prisma/seed.js"
   }
 }
+

@@ -1,163 +1,51 @@
-JAVIER MONTORO
-Proyecto Ecommerce + Chat (Frontend + Backend + Docker + PostgreSQL)
-Este proyecto consiste en una aplicación full-stack que incluye:
+# Programación 3 - E-Commerce Dockerizado
 
-Backend: API REST en Node.js + Express + Prisma
+## Descripción
 
-Base de datos: PostgreSQL corriendo en Docker (docker-compose)
+Aplicación web de e-commerce dockerizada con 3 contenedores:
 
-Frontend: React + Vite consumiendo exclusivamente la API
+- **frontend**: App React (Vite) servida con Nginx en el puerto 80
+- **backend**: API Express + Prisma + TypeScript
+- **db**: Base de datos PostgreSQL 15
 
-Autenticación: JWT
+## Requisitos
 
-Funcionalidades principales:
+- Docker
+- Docker Compose
 
-Registro / Login de usuarios
+## Cómo levantar
 
-Gestión de productos
+```bash
+docker compose up --build
+```
 
-Sistema de mensajería entre usuarios
+Luego abrir en el navegador: **http://localhost**
 
-Perfil de usuario
+## Arquitectura
 
-Requisitos previos
+```
+┌─────────────────────────────────────────────┐
+│                 Puerto 80                    │
+│              (único expuesto)                │
+├─────────────────────────────────────────────┤
+│            NGINX (Frontend)                  │
+│   Sirve React App + Proxy reverso /api/     │
+├─────────────────────────────────────────────┤
+│              Backend (Express)               │
+│           Puerto 3000 (interno)              │
+├─────────────────────────────────────────────┤
+│            PostgreSQL (DB)                   │
+│           Puerto 5432 (interno)              │
+└─────────────────────────────────────────────┘
+```
 
-1- La computadora donde se ejecute este proyecto debe tener instalado:
-Docker Desktop → https://www.docker.com/products/docker-desktop/
-Node.js 18+ o superior (se recomienda Node 20) → https://nodejs.org
+- El **frontend** (Nginx) es el único contenedor que expone un puerto al host (80).
+- Las peticiones a `/api/*` son redirigidas al **backend** vía proxy reverso de Nginx.
+- El **backend** y la **base de datos** NO exponen puertos al host, solo se comunican internamente en la red de Docker.
 
-2- Configuración de Entorno
- 1. Variables de entorno del Backend (backend/.env)
+## Usuarios de prueba (seed)
 
-Crear un archivo .env dentro de la carpeta backend, con este contenido: 
-PORT=3000
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ecommerce?schema=public"
-JWT_SECRET="clave_super_segura"
-
- 2. Levantar la Base de Datos (PostgreSQL con Docker)
-
-Dentro de la carpeta backend, ejecutar:
-
-docker compose up -d
-
-Esto levanta automáticamente:
-
-Servidor PostgreSQL
-
-Base de datos: ecommerce
-
-Usuario: postgres
-
-Password: postgres
-
-Para confirmar que está funcionando:
-
-docker ps
-
-Deberías ver un contenedor postgres:15 en estado Up.
-3. Aplicar migraciones Prisma
-
-Dentro de backend/:
-
-npx prisma migrate deploy
-
-Luego ejecutar el seed:
-
-npm run seed
-
-Esto carga:
-
-Usuarios de prueba
-
-Productos
-
-Categorías
-
-4. Ejecutar el Backend
-
-Dentro de backend/:
-
-Instalar dependencias:
-
-npm install
-
-
-Ejecutar en modo desarrollo:
-
-npm run dev
-
-
-El backend quedará disponible en:
-
-http://localhost:3000
-
-5. Ejecutar el Frontend
-
-Ir a:
-
-frontend/
-
-Crear el archivo .env:
-
-VITE_API_BASE_URL="http://localhost:3000"
-
-
-Instalar dependencias:
-
-npm install
-
-
-Ejecutar:
-
-npm run dev
-
-
-Abrir en el navegador:
-
-http://localhost:5173
-
-Pruebas del Backend – Archivo requests.http
-
-El backend incluye un archivo:
-
-backend/requests.http
-
-
-Con ejemplos listos para probar:
-
-Registro
-
-Login
-
-CRUD de productos
-
-Conversaciones
-
-Mensajes
-
-Perfil
-
-Se puede utilizar con la extensión REST Client de VS Code.
-
-3- Cómo funciona el Proyecto
-Usuarios
-
-Registrarse e iniciar sesión
-
-Editar perfil
-
-Productos
-
-Listado
-
-CRUD desde la API
-
-Vista en frontend
-
-Mensajería entre usuarios
-
-Crear conversación
-
-Listar conversaciones
-
-Enviar y recibir mensajes (polling automático)
+| Email              | Contraseña |
+| ------------------ | ---------- |
+| juan@example.com   | 1234       |
+| maria@example.com  | 1234       |

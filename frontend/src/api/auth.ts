@@ -45,21 +45,11 @@ export function decodeToken(token: string): { userId?: number; email?: string } 
 }
 
 export async function apiLogin(payload: LoginPayload) {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) throw new Error("Credenciales inválidas");
-  return (await res.json()) as { token: string; user?: AuthUser };
+  const { data } = await api.post("/api/auth/login", payload);
+  return data as { token: string; user?: AuthUser };
 }
 
 export async function apiRegister(payload: RegisterPayload) {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) throw new Error("No se pudo registrar");
-  return (await res.json()) as { token: string; user?: AuthUser };
+  const { data } = await api.post("/api/auth/register", payload);
+  return data as { token: string; user?: AuthUser };
 }

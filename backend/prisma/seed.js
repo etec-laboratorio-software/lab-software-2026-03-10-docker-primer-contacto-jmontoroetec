@@ -17,8 +17,8 @@ async function main() {
   console.log("🗑️ Limpiando base de datos…");
 
   await safeDelete(prisma.message, "message");
+  await safeDelete(prisma.conversationParticipant, "conversationParticipant");
   await safeDelete(prisma.conversation, "conversation");
-  await safeDelete(prisma.productCategory, "productCategory");
   await safeDelete(prisma.product, "product");
   await safeDelete(prisma.category, "category");
   await safeDelete(prisma.user, "user");
